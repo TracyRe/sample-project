@@ -1,21 +1,93 @@
-// VARIABLES
+ // VARIABLES
 
-$basefont: Helvetica, Arial, sans-serif;
+$basefont: 'Helvetica','Arial', sans-serif;
+$textcolor: #2C1703;
+$accent: #43b1c1;
+$accent2: #D1ECE5;
+$bgcolor-page: #b3cecd;
+$bgcolor-gradient: #ecefe1;
+$bgcolor-nav: #ffffff;
+$bgcolor-button: $accent;
+$text-button: #ffffff;
+$box-shadow: 2px 2px 4px rgba(150, 150, 150, .5);
 
-body {
-  font:
-  {
-    family: $basefont;
-    size: 18px;
-  }
-  height: 100vh;
-  background: linear-gradient(30deg, #b3cecd, #ecefe1);
+
+
+// MIXINS
+
+@mixin border($size, $color) {
+  border: $size solid $color;
 }
 
-h1, h2 {
+@mixin cushion($padding, $margin) {
+  padding: $padding;
+  margin: $margin;
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin min-max-width($min-width, $max-width) {
+  min-width: $min-width;
+  max-width: $max-width;
+}
+
+@mixin tablet {
+  @media screen and (min-width: 600px) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape {
+  @media screen and (min-width: 900px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: 1200px) {
+    @content;
+  }
+}
+
+
+// STYLES
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  // @include border(1px, #f0f);  // Troubleshooting
+}
+
+html {
+  font-size: 16px;
+  @include tablet {
+    font-size: 18px;
+  }
+  @include desktop {
+    font-size: 20px;
+  }
+}
+
+body {
+  @include size(100%, 100%);
+  background-color: $bgcolor-page;
+  color: $textcolor;
+  font: {
+    family: $basefont;
+    weight: 400;
+    size: 1em;
+  }
+}
+
+h1, h2, h3 {
+  margin: 0 0 1rem 0;
+  line-height: 120%;
+  text-align: center;
   font-weight: normal;
-  margin: 1rem 0 .5rem 0;
-  color: #242828;
 }
 
 h1 {
@@ -26,16 +98,67 @@ h2 {
   font-size: 2rem;
 }
 
-p {
+p, input {
   font-size: 1rem;
-  margin: .5rem 0 .5rem 0;
+  margin: 0 0 1rem 0;
   color: #333;
   line-height: 140%;
 }
 
+// p:first-of-type {
+//   margin-top: 0;
+// }
+
+a {
+  color: $accent;
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  color: lighten($accent, 10%);
+}
+
+
+button {
+  @include cushion(.25rem 1rem, .5rem auto .5rem auto);
+  background: $bgcolor-button;
+  border-radius: 4px;
+  box-shadow: $box-shadow;
+  color: $text-button;
+  font-size: 1rem;
+  font-weight: 200;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+}
+
+ul {
+  margin-left: 2rem;
+  li {
+    list-style: disc;
+  }
+}
+
+
 .container {
-  width: 80%;
-  max-width: 1000px;
-  min-width: 400px;
-  margin: 2rem auto 1rem auto;
+  @include size(100%, 100%);
+  background: linear-gradient(30deg, $bgcolor-page, $bgcolor-gradient);
+}
+
+.content-wrap {
+  @include size(80%, 100%);
+  @include min-max-width(400px, 1200px);
+  @include cushion(2rem 0 1rem 0, 0 auto 0 auto);
+  height: 100%;
+  // @include border(1px, #f0f);
+}
+
+.image {
+  @include cushion(0, 1rem 0);
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  img {
+    @include size(60vw, auto);
+    @include min-max-width(200px, 480px);
+  }
 }
